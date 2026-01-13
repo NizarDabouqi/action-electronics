@@ -1,0 +1,57 @@
+<div class="product-detail" *ngIf="product">
+  <button (click)="goBack()" class="back-btn">← Back to Products</button>
+
+  <div class="product-content">
+    <div class="product-images">
+      <div class="main-image">
+        <img [src]="product.images[selectedImageIndex]" [alt]="product.name" />
+      </div>
+      <div class="thumbnail-images">
+        <img
+          *ngFor="let image of product.images; let i = index"
+          [src]="image"
+          [alt]="product.name + ' ' + (i + 1)"
+          (click)="selectImage(i)"
+          [class.selected]="selectedImageIndex === i"
+        />
+      </div>
+    </div>
+
+    <div class="product-info">
+      <h1>{{ product.name }}</h1>
+      <p class="price">${{ product.price }}</p>
+
+      <div class="description">
+        <p>{{ product.description }}</p>
+      </div>
+
+      <div class="characteristics">
+        <h3>Characteristics:</h3>
+        <ul>
+          <li *ngFor="let char of product.characteristics">{{ char }}</li>
+        </ul>
+      </div>
+
+      <div class="colors" *ngIf="product.availableColors.length > 0">
+        <h3>Available Colors:</h3>
+        <div class="color-options">
+          <div
+            *ngFor="let color of product.availableColors"
+            class="color-option"
+            [class.selected]="selectedColor?.hex === color.hex"
+            (click)="selectColor(color)"
+            [style.background-color]="color.hex"
+          >
+            <span class="color-name">{{ color.name }}</span>
+          </div>
+        </div>
+      </div>
+
+      <button (click)="addToCart()" class="add-to-cart-btn">Add to Cart</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!product">
+  <p>Product not found.</p>
+</div>
